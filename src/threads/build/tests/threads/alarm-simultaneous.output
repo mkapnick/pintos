@@ -1,0 +1,24 @@
+qemu -hda /tmp/hHF35NIDRM.dsk -m 4 -net none -nographic -monitor null
+PiLo hda1
+Loading.........
+Kernel command line: -q run alarm-simultaneous
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  104,755,200 loops/s.
+Boot complete.
+Executing 'alarm-simultaneous':
+(alarm-simultaneous) begin
+(alarm-simultaneous) Creating 3 threads to sleep 5 times each.
+(alarm-simultaneous) Each thread sleeps 10 ticks each time.
+(alarm-simultaneous) Within an iteration, all threads should wake up on the same tick.
+Kernel PANIC at ../../threads/interrupt.c:91 in intr_enable(): assertion `!intr_context ()' failed.
+Call stack: 0xc002849b 0xc00217c3 0xc002135a 0xc0023a7b 0xc00218d1 0xc0021adb 0xc002120d 0xc002115e.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 23 ticks
+Thread: 1 idle ticks, 22 kernel ticks, 0 user ticks
+Console: 903 characters output
+Keyboard: 0 keys pressed
+Powering off...

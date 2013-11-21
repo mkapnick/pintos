@@ -1,0 +1,8 @@
+FAIL
+Kernel panic in run: PANIC at ../../tests/threads/tests.c:51 in run_test(): no test named "lg-create"
+Call stack: 0xc00282bb 0xc002a19f 0xc00201b5 0xc0020734
+Translation of call stack:
+0xc00282bb: debug_panic (.../../lib/kernel/debug.c:38)
+0xc002a19f: run_test (.../tests/threads/tests.c:52)
+0xc00201b5: run_task (.../../../threads/init.c:292)
+0xc0020734: run_actions (.../../../threads/init.c:341)

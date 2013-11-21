@@ -1,0 +1,188 @@
+                     +--------------------------+
+                     |         CS 450           |
+                     | PROJECT 3: SYSTEM CALLS  |
+                     |     DESIGN DOCUMENT      |
+                     +--------------------------+
+
+---- GROUP ----
+
+>> Fill in the names and email addresses of your group members.
+
+Michael Jeschke jeschkmr@dukes.jmu.edu
+Brandon Schimel
+Michael Kapnick kapnicmt@dukes.jmu.edu
+Cody Knickerbocker 
+
+
+
+---- PRELIMINARIES ----
+
+>> If you have any preliminary comments on your submission, notes for the
+>> TAs, or extra credit, please give them here.
+
+>> Please cite any offline or online sources you consulted while
+>> preparing your submission, other than the Pintos documentation, course
+>> text, lecture notes, and course staff.
+
+
+                             SYSTEM CALLS
+                             ============
+
+---- DATA STRUCTURES ----
+
+>> A1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+struct thread
+  {
+    /* Owned by thread.c. */
+    tid_t tid;                          /* Thread identifier. */
+    enum thread_status status;          /*tstate THREAD_DYING,THREAD_RUNNING,THREAD_READY,THREAD_BLOCKED*/
+    char name[16];                      /* Name (for debugging purposes).Threads name as a string */
+    uint8_t *stack;      /* Saved stack pointer.Every thread has it's own stack to keep
+                                           track of its state. When the thread is running, the CPU's
+                                           stack pointer register --> tracks the top of the stack */
+                         /*When the CPU switches to another thread, this member 
+                                           SAVES THE THREAD'S STACK POINTER */
+
+
+    struct file * files[128];
+    int fd; 
+    int priority;                       /* Priority. */
+    struct list_elem allelem;           /* List element for all threads list. */
+
+    /* Shared between thread.c and synch.c. */
+    struct list_elem elem;              /* List element.Used to link the thread into the list of all 
+                                         threads */
+
+    /* Owned by userprog/process.c. */
+    uint32_t *pagedir;                  /* Page directory. */
+
+    /* Owned by thread.c. */
+    unsigned magic;                     /* Detects stack overflow. */
+  };
+
+I added a struct file * files[128] in struct thread to keep track of the files that are opened. 
+I also added an int fd to keep track of where we are in the files array
+
+
+struct lock fl;
+
+Created this struct to make sure threads are behaving synchronously where need be, 
+used extensively in syscall.c
+
+
+
+---- ALGORITHMS ----
+
+>> A2: Describe your code for validating user buffers. In particular,
+>> when a user-mode program passes parameters to the "read" and "write"
+>> system calls, how do you validate the entire buffer? Note that the
+>> system call parameters specify where the buffer starts, but you need
+>> to validate the entire thing is in user memory and is mapped into the
+>> virtual memory space (e.g., by using pagedir_get_page()).
+
+ if (!is_user_vaddr(buffer) || !is_user_vaddr(buffer + size))
+  {
+      return -1;
+  }
+
+This was the code I used to validate the buffer. I check first to 
+see that the buffer address is valid, and then I make sure that
+the address at the end of the buffer is also valid. If these 
+2 conditions are true, then the buffer is valid
+
+
+
+>> A3: Suppose a system call causes a full page (4,096 bytes) of data
+>> to be copied from user space into the kernel.  What is the least
+>> and the greatest possible number of inspections of the page table
+>> (i.e., calls to pagedir_get_page()) that might result?  What about
+>> for a system call that only copies 2 bytes of data?  Is there room
+>> for improvement in these numbers, and how much?
+
+The least number of inspections of the page table would be checking
+the beginning and end addresses of the page.
+
+---- RATIONALE ----
+
+>> A4: To perform reads and writes to the file system, you must maintain
+>> a mapping between file descriptors--integers that the user-mode
+>> program sees--and pointers to internal file structures--which are
+>> invisible to the user-mode program. There are a couple of approaches
+>> to this. For instance, you can have a global (struct file *) array
+>> and use the file descriptors as an index into the array.
+>> Alternatively, you could have such an array within the thread
+>> structure. Lastly, you could just create a linked list. What are the
+>> advantages and/or disadvantages of the approach you adopted? Note
+>> that, in all cases, you MUST prevent collisions. For instance, if
+>> thread A opens file foo.txt and gets file descriptor 2, thread B
+>> must NOT be able to pass 2 as a file descriptor and read or write to
+>> foo.txt (unless B has also opened foo.txt). How do you validate that
+>> the file descriptor passed from the user-mode program is okay?
+
+>> A5: The wait() system call requires establishing a parent-child
+>> relationship between threads that doesn't otherwise exist. Explain
+>> how you created this and why you selected the approach that you did.
+
+---- SYNCHRONIZATION ----
+
+>> A6: The wait() system call is very tricky, due to the complicated
+>> nature of the timing of events. As a starting point, assume thread A
+>> is the parent of thread B and A calls wait() to wait on B. If thread
+>> B is still running, A becomes blocked until B calls exit(). How do
+>> you accomplish this? Here is the trickier case: What if B had already
+>> exited prior to A calling wait()? At that point, A must be able to
+>> confirm that B was one of its children, but the struct thread for B
+>> might not exist anymore. How would you handle this case?
+
+I wish I could answer this question with full conviction, but I honestly didn't
+get a chance to really dive into sys_wait, partly because I intimidated myself before
+even trying. 
+
+My initial guess would be to have process A busy wait until
+process B calls exit.
+
+                           SURVEY QUESTIONS
+                           ================
+
+Answering these questions is optional, but it will help us improve the
+course in future quarters.  Feel free to tell us anything you
+want--these questions are just to spur your thoughts.  You may also
+choose to respond anonymously in the course evaluations at the end of
+the quarter.
+
+>> In your opinion, was this assignment, or any one of the three problems
+>> in it, too easy or too hard?  Did it take too long or too little time?
+
+I thought the project was fair, especially being able to do it with other
+group members. Although, sometimes group projects don't always work out for 
+the best.
+
+>> Did you find that working on a particular part of the assignment gave
+>> you greater insight into some aspect of OS design?
+
+Working with the file descriptor for sure. Definitely coding up
+the sys call functions read, write, and open gave me some cool 
+insight. I wasn't able to finish sys_wait, so I didn't gain as
+much insight on that sys call as I would have liked to.
+
+>> Is there some particular fact or hint we should give students in
+>> future quarters to help them solve the problems?  Conversely, did you
+>> find any of our guidance to be misleading?
+
+Possibly more visuals ?... I'm not quite sure how to incorporate this,
+but I know I'm not the only visual learner out there, so maybe guide students 
+somehow how by helping them visualize the sys_calls better. Not so much white 
+board visuals, but actual images, of the file descriptor for instance.
+
+
+
+>> Do you have any suggestions for the TAs to more effectively assist
+>> students, either for future quarters or the remaining projects?
+
+Not really, the TA was fine. 
+
+>> Any other comments?
+Yes. Problems with the group members was a real bummer. 

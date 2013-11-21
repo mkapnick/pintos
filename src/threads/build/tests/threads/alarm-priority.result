@@ -1,0 +1,12 @@
+FAIL
+Kernel panic in run: PANIC at ../../threads/interrupt.c:91 in intr_enable(): assertion `!intr_context ()' failed.
+Call stack: 0xc002848b 0xc00217b3 0xc0023a75 0xc00218c1 0xc0021acb 0xc0023935 0xc0023b54 0xc0020665
+Translation of call stack:
+0xc002848b: debug_panic (.../../lib/kernel/debug.c:38)
+0xc00217b3: intr_enable (...../threads/interrupt.c:97)
+0xc0023a75: timer_interrupt (...../../devices/timer.c:181)
+0xc00218c1: intr_handler (..../threads/interrupt.c:367)
+0xc0021acb: intr_entry (threads/intr-stubs.S:38)
+0xc0023935: too_many_loops (...../../devices/timer.c:190)
+0xc0023b54: timer_calibrate (.../../../devices/timer.c:53)
+0xc0020665: main (.../../../threads/init.c:131)

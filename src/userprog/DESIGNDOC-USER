@@ -1,0 +1,141 @@
+                     +--------------------------+
+                     |         CS 450           |
+                     | PROJECT 2: USER PROGRAMS |
+                     |     DESIGN DOCUMENT      |
+                     +--------------------------+
+
+---- GROUP ----
+
+>> Fill in the names and email addresses of your group members.
+
+Michael Jeschke <jeschkmr@dukes.jmu.edu>
+Michael Kapnick <kapnicmt@dukes.jmu.edu>
+Brandon Schimmel <schimmbe@dukes.jmu.edu>
+Cody Knickerbocker <knickecj@dukes.jmu.edu>
+
+---- PRELIMINARIES ----
+
+>> If you have any preliminary comments on your submission, notes for the
+>> TAs, or extra credit, please give them here.
+
+>> Please cite any offline or online sources you consulted while
+>> preparing your submission, other than the Pintos documentation, course
+>> text, lecture notes, and course staff.
+
+                           ARGUMENT PASSING
+                           ================
+
+---- DATA STRUCTURES ----
+
+>> A1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+bool success -- a varible to check if the program was loaded into memory
+char* token -- it is the thing that was just tokenized from the command line
+char* program_name -- the first argument tokenized from command line
+char* saveptr -- current location of the pointer
+
+
+
+---- ALGORITHMS ----
+
+>> A2: Briefly describe how you implemented argument parsing.  How do
+>> you arrange for the elements of argv[] to be in the right order?
+>> How do you avoid overflowing the stack page?
+
+We used the strtok_r() function to tokenize each argument from the command line.
+Elements are ordered in the stack by parsing argv[] from the last argument to 
+the first argument placed one byte at a time with characters in reverse order
+starting at the top -most available byte in the stack.
+
+---- RATIONALE ----
+
+>> A3: Why does Pintos implement strtok_r() but not strtok()?
+
+Pintos implements strtok_r() instead of strtok(), because strtok_r() in order to keep track of 
+where in the string that it is being tokenized.
+
+
+>> A4: In Pintos, the kernel separates commands into a executable name
+>> and arguments.  In Unix-like systems, the shell does this
+>> separation.  Identify at least two advantages of the Unix approach.
+
+1. You don't have to worry about accessing kernel memory. 
+2. There would be less overhead from the lack of context switches needed.
+
+
+---- SYNCHRONIZATION ----
+
+>> A5: The base implementation of process_execute() returns without
+>> waiting on the new executable to finish loading. As a result, Pintos
+>> would shut down before the program ever ran. Copy your code for
+>> synchronizing this timing here, and explain precisely how it works.
+>> What happens if the command-line specifies an executable that does
+>> not exist?
+
+
+                             SYSTEM CALLS
+                             ============
+
+---- DATA STRUCTURES ----
+
+>> B1: Copy here the declaration of each new or changed `struct' or
+>> `struct' member, global or static variable, `typedef', or
+>> enumeration.  Identify the purpose of each in 25 words or less.
+
+uint32_t *sp = f -> esp; ---- a pointer to the location on the stack to start reading in the parameters
+  uint32_t syscallnum = *sp; ---- converts the pointer of the syscall number into the actual value 
+  uint32_t first_arg = 0; ---- the first arg that goes into the read or write syscalls.
+  uint32_t second_arg = 0; ---- the second arg that goes into the read or write syscalls
+  uint32_t third_arg = 0; ---- the third arg that goes into the read or write syscalls
+
+---- ALGORITHMS ----
+
+>> B2: Describe your code for reading and writing user data from the
+>> kernel. In particular, explain how you validate the entire buffer
+>> that user-mode programs pass as parameters to the "read" and "write"
+>> data structures.
+
+It reads the user data from the stack pointer that was included the interrupt frame,
+our code checks to make sure that the buffer can written to and return a -1 to signal that it was incorrect.
+
+
+>> B3: Suppose a system call causes a full page (4,096 bytes) of data
+>> to be copied from user space into the kernel.  What is the least
+>> and the greatest possible number of inspections of the page table
+>> (e.g. calls to pagedir_get_page()) that might result?  What about
+>> for a system call that only copies 2 bytes of data?  Is there room
+>> for improvement in these numbers, and how much?
+
+The least number of checks is 1 and the greatest number of checks is 4,096 for the number of bytes
+there are in the page. 
+
+for a system call of 2 bytes then the least is still 1 but the greatest number is only 2 inspections,
+there is alot of room for improvement, between 4,096 call to 2 calls.
+
+
+                           SURVEY QUESTIONS
+                           ================
+
+Answering these questions is optional, but it will help us improve the
+course in future quarters.  Feel free to tell us anything you
+want--these questions are just to spur your thoughts.  You may also
+choose to respond anonymously in the course evaluations at the end of
+the quarter.
+
+>> In your opinion, was this assignment, or any one of the three problems
+>> in it, too easy or too hard?  Did it take too long or too little time?
+
+
+>> Did you find that working on a particular part of the assignment gave
+>> you greater insight into some aspect of OS design?
+
+>> Is there some particular fact or hint we should give students in
+>> future quarters to help them solve the problems?  Conversely, did you
+>> find any of our guidance to be misleading?
+
+>> Do you have any suggestions for the TAs to more effectively assist
+>> students, either for future quarters or the remaining projects?
+
+>> Any other comments?

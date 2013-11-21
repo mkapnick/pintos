@@ -1,0 +1,43 @@
+qemu -hda /tmp/ZoE5gPGpVE.dsk -m 4 -net none -nographic -monitor null
+PiLo hda1
+Loading.........
+Kernel command line: -q run priority-donate-multiple2
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  104,755,200 loops/s.
+Boot complete.
+Executing 'priority-donate-multiple2':
+(priority-donate-multiple2) begin
+(priority-donate-multiple2) Main thread should have priority 34.  Actual priority: 31.
+(priority-donate-multiple2) Main thread should have priority 36.  Actual priority: 31.
+(priority-donate-multiple2) Main thread should have priority 36.  Actual priority: 31.
+(priority-donate-multiple2) Threads b, a, c should have just finished, in that order.
+(priority-donate-multiple2) Main thread should have priority 31.  Actual priority: 31.
+(priority-donate-multiple2) end
+Execution of 'priority-donate-multiple2' complete.
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+
+TIMEOUT after 32 seconds of wall-clock time - load average: 1.43, 0.72, 0.39

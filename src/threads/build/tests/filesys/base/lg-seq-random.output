@@ -1,0 +1,20 @@
+qemu -hda /tmp/xcRJB1I2aB.dsk -m 4 -net none -nographic -monitor null
+PiLo hda1
+Loading.........
+Kernel command line: -q run lg-seq-random
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  105,881,600 loops/s.
+Boot complete.
+Executing 'lg-seq-random':
+Kernel PANIC at ../../tests/threads/tests.c:51 in run_test(): no test named "lg-seq-random"
+Call stack: 0xc00282bb 0xc002a19f 0xc00201b5 0xc0020734.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 30 ticks
+Thread: 0 idle ticks, 30 kernel ticks, 0 user ticks
+Console: 604 characters output
+Keyboard: 0 keys pressed
+Powering off...

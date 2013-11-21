@@ -1,0 +1,16 @@
+#include <stdio.h>
+#include <syscall.h>
+
+int
+main (int argc, char **argv)
+{
+ 
+  int i;
+  printf("In echo program! argc is %i\n", argc);
+  printf("argv[1] is: %s", argv[0][1]);
+  for (i = 1; i < argc; i++)
+    printf ("%s ", argv[i]);
+  printf ("\n");
+
+  return EXIT_SUCCESS;
+}

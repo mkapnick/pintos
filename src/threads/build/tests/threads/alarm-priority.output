@@ -1,0 +1,17 @@
+qemu -hda /tmp/k2gpIuNWPD.dsk -m 4 -net none -nographic -monitor null
+PiLo hda1
+Loading.........
+Kernel command line: -q run alarm-priority
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  Kernel PANIC at ../../threads/interrupt.c:91 in intr_enable(): assertion `!intr_context ()' failed.
+Call stack: 0xc002848b 0xc00217b3 0xc0023a75 0xc00218c1 0xc0021acb 0xc0023935 0xc0023b54 0xc0020665.
+The `backtrace' program can make call stacks useful.
+Read "Backtraces" in the "Debugging Tools" chapter
+of the Pintos documentation for more information.
+Timer: 1 ticks
+Thread: 0 idle ticks, 1 kernel ticks, 0 user ticks
+Console: 592 characters output
+Keyboard: 0 keys pressed
+Powering off...

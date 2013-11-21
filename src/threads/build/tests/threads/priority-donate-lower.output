@@ -1,0 +1,44 @@
+qemu -hda /tmp/BmoLnxk92M.dsk -m 4 -net none -nographic -monitor null
+PiLo hda1
+Loading.........
+Kernel command line: -q run priority-donate-lower
+Pintos booting with 4,096 kB RAM...
+383 pages available in kernel pool.
+383 pages available in user pool.
+Calibrating timer...  104,755,200 loops/s.
+Boot complete.
+Executing 'priority-donate-lower':
+(priority-donate-lower) begin
+(priority-donate-lower) Main thread should have priority 41.  Actual priority: 31.
+(priority-donate-lower) Lowering base priority...
+(priority-donate-lower) Main thread should have priority 41.  Actual priority: 21.
+(priority-donate-lower) acquire must already have finished.
+(priority-donate-lower) Main thread should have priority 21.  Actual priority: 21.
+(priority-donate-lower) end
+Execution of 'priority-donate-lower' complete.
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+Unexpected interrupt 0x0e (#PF Page-Fault Exception)
+
+TIMEOUT after 30 seconds of host CPU time

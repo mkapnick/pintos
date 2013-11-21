@@ -1,0 +1,4 @@
+Prototype mismatch: sub main::SIGVTALRM () vs none at /home/michael/Academics/cs450/p2/src/utils/pintos line 935.
+Constant subroutine SIGVTALRM redefined at /home/michael/Academics/cs450/p2/src/utils/pintos line 927.
+Use of uninitialized value in numeric le (<=) at /home/michael/Academics/cs450/p2/src/utils/pintos line 830.
+qemu: terminating on signal 2 from pid 6403
