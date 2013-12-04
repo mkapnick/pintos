@@ -584,20 +584,18 @@ void
 thread_sleep(int64_t ticks)
 {
    
-  intr_disable();
+  enum intr_level old_level;
+  old_level = intr_disable ();
+
+  struct thread *cur = thread_current ();
+  cur -> num_ticks = ticks;
   
-  thread_current() -> num_ticks = ticks;
-  thread_current() -> sleep_elem = thread_current() -> elem;
+  if (cur != idle_thread)
+    list_insert_ordered(&sleep_list, &thread_current() -> elem, order_by_ticks, NULL);   
   
-  //list_push_back(&sleep_list, &thread_current() -> sleep_elem);
-  if(list_empty(&sleep_list))
-    list_push_back(&sleep_list, &thread_current() -> sleep_elem);
-  else
-    list_insert_ordered(&sleep_list, &thread_current() -> sleep_elem, order_by_ticks, NULL);   
-  
-  //intr_yield_on_return();
   thread_block(); 
-  intr_enable();
+  intr_set_level (old_level);
+
 }
 
 bool
@@ -615,71 +613,50 @@ order_by_ticks(const struct list_elem * a, const struct list_elem * b, void *aux
   struct thread * t1 = (struct thread *) list_entry(a, struct thread, elem);
   struct thread * t2 = (struct thread *) list_entry(b, struct thread, elem);  
   
-  return t1 -> num_ticks > t2 -> num_ticks;
+  return t1 -> num_ticks < t2 -> num_ticks;
+}
+
+void dummy_function ()
+{
+
 }
 
 void
 thread_wake_up()
 {
-  /* sleep_list threads are ordered by their sleep_elem, so only need to check first thread */
   
+  enum intr_level old_level;
+  old_level = intr_disable ();
+
   if(!list_empty(&sleep_list))
   {
   
-    intr_disable();
-  
     struct list_elem * current, *next;
     struct thread * t;
-    bool ok = true;
     int64_t cur_ticks = timer_ticks();
   
     current = list_begin(&sleep_list);
-    t = list_entry(current, struct thread, sleep_elem);
+    t = list_entry(current, struct thread, elem);
     next = current->next;
   
     /* IF LIST IS ORDERED, RUN THIS CODE */ 
-    printf("TIMER TICKS is equal to: %d\n ",cur_ticks);
-    printf("TICKS FOR THREAD is equal to: %d\n", t -> num_ticks);
-    
-    while (t -> num_ticks <= cur_ticks && ok)
+
+    while (t -> num_ticks <= cur_ticks && current != list_end(&sleep_list))
     { 
-      list_pop_front(&sleep_list);
-      list_push_back(&ready_list, &t->elem); 
+      dummy_function();
+      list_remove(current);
       thread_unblock(t);
-      t = list_entry(next, struct thread, sleep_elem);
+      t = list_entry(next, struct thread, elem);
+      current = next;
       next = next->next;
     }
     
-    if (next == NULL)
-      ok =false;
-    
-    intr_enable();
-  }
   }
 
+  intr_set_level (old_level);
 
-  /*intr_disable();
-  struct list_elem * current;
-  struct thread * t;
-  for (current = list_begin(&sleep_list); current != list_end(&sleep_list);
-       current = list_next(current))
-  {
-    t = list_entry(current, struct thread, sleep_elem);
-    ASSERT(is_thread(t));
-    if(t -> num_ticks <= timer_ticks())
-    {
-      //intr_disable();
-      list_remove(&t->sleep_elem);
-      list_push_front(&ready_list, &t -> sleep_elem);
-      thread_unblock(t);
-      //intr_enable();
-      
-    }   
   }
 
-  intr_enable();*/
-
-  
 
 
 
